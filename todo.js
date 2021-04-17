@@ -10,16 +10,12 @@ btn.addEventListener('click', function () {
 
     const form = new FormData(todoForm);
     var formValues = {};
+
     for (var val of form.keys()) {
         formValues[val] = form.get(val);
     }
 
-    var todo = {
-        title: formValues.title,
-        description: formValues.description,
-        createdAt: new Date().toString(),
-        status: 'active'
-    };
+    var todo = getTodo(formValues.title, formValues.description);
 
     title.value = null;
     description.value = null;
@@ -31,7 +27,14 @@ btn.addEventListener('click', function () {
 
 function getTodo(title, description) {
 
+    // Task 1
+    // I have to extract the last element and get out its id 
+    // And id + 1 will be our new Id
+
+    var id;
+
     return {
+        id,
         title,
         description,
         createdAt: new Date().toString(),
@@ -77,6 +80,15 @@ function renderATodoItem(todo) {
     statusBtn.className = 'btn btn-info';
     statusBtn.textContent = 'Mark Completed';
 
+    statusBtn.addEventListener('click', () => {
+        console.log(todo.id);
+
+        // Task 2
+        // You have to find out a todo from that list of todos whose id id todo.id (find function)
+
+        // you need to change the status of that and call the render function again
+    });
+
     markCompletedDiv.appendChild(statusBtn);
 
     const actionsDiv = document.createElement('div');
@@ -102,6 +114,14 @@ function renderATodoItem(todo) {
     statusBtn = document.createElement('button');
     statusBtn.className = 'btn btn-danger';
     statusBtn.textContent = 'Delete';
+
+    statusBtn.addEventListener('click', () => {
+        console.log(todo.id);
+
+        // Task 3
+        // You have to remove todo from todos whose id is todo.id (filter function)
+        // After that you have to call render function again
+    });
 
     statusAction.appendChild(statusBtn);
 
