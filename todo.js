@@ -42,8 +42,14 @@ btn.addEventListener('click', function () {
 
     title.value = null;
     description.value = null;
+
+    persistTodos(todos);
     render(todos);
 });
+
+function persistTodos(todos) {
+    localStorage.setItem('todos', JSON.stringify(todos));
+}
 
 
 function editLock(id) {
@@ -149,6 +155,7 @@ function renderATodoItem(todo) {
         newTodos[idx] = t;
 
         todos = newTodos;
+        persistTodos(todos);
         render(newTodos);
     });
 
@@ -195,6 +202,7 @@ function renderATodoItem(todo) {
 
         var newTodos = todos.filter(t => t.id != todo.id);
         todos = newTodos;
+        persistTodos(todos);
         render(newTodos);
     });
 
