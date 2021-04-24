@@ -1,10 +1,25 @@
-// Task 1: You have to implment that filter functionality
-// Task 2: If the status of the todo is marked completed then you 
+// TODO: You have to implment that filter functionality
+// TODO: If the status of the todo is marked completed then you 
 // have to disabled the Mark Completed button
+
+// TODO: Update API { status: active ---> completed}
+// TODO: Delete API { delete a todo }
+
+// @GET http://localhost:3000/todos
+// @POST http://localhost:3000/todos {}
+// @PATCH http://localhost:3000/todos/1 {}
+// @PUT http://localhost:3000/todos/1
+// @Delete http://localhost:3000/todos/1
 
 let todos = [];
 let isEdit = false;
 let editId = null;
+
+fetchTodos()
+    .then(data => {
+        todos = data;
+        render(todos);
+    })
 
 const todoForm = document.querySelector('#todoForm');
 const btn = document.querySelector('#btn');
@@ -26,7 +41,11 @@ btn.addEventListener('click', function () {
         // add functionality
 
         var todo = getTodo(formValues.title, formValues.description);
-        todos = [...todos, todo];
+        createTodo(todo)
+            .then(data => {
+                todos = [...todos, todo];
+                render(todos);
+            })
     }
     else {
         // edit functionality
@@ -43,13 +62,8 @@ btn.addEventListener('click', function () {
     title.value = null;
     description.value = null;
 
-    persistTodos(todos);
-    render(todos);
 });
 
-function persistTodos(todos) {
-    localStorage.setItem('todos', JSON.stringify(todos));
-}
 
 
 function editLock(id) {
@@ -74,16 +88,7 @@ function getTodo(title, description) {
     // I have to extract the last element and get out its id 
     // And id + 1 will be our new Id
 
-    var id;
-
-    if (todos.length == 0) id = 1;
-    else {
-        var last = todos[todos.length - 1];
-        id = last.id + 1;
-    }
-
     return {
-        id,
         title,
         description,
         createdAt: new Date().toString(),
@@ -155,7 +160,6 @@ function renderATodoItem(todo) {
         newTodos[idx] = t;
 
         todos = newTodos;
-        persistTodos(todos);
         render(newTodos);
     });
 
@@ -202,7 +206,6 @@ function renderATodoItem(todo) {
 
         var newTodos = todos.filter(t => t.id != todo.id);
         todos = newTodos;
-        persistTodos(todos);
         render(newTodos);
     });
 
@@ -222,5 +225,4 @@ function renderATodoItem(todo) {
 }
 
 
-render(todos);
 
